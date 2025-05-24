@@ -3,616 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 টাকা আয় করুন 💸</title>
+    <title>ফেসবুক সার্ভে ইনকাম - ডেমো 🇧🇩</title>
+    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== Reset Styles ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* একটি সাধারণ বাংলা সাপোর্টেড ফন্ট */
+        :root {
+            --primary-color: #7b2cbf; /* Deep Purple */
+            --secondary-color: #560bad; /* Darker Purple */
+            --accent-color: #ff6700;  /* Vibrant Orange */
+            --accent-color-light: #ff9e00; /* Lighter Orange/Yellow */
+            --text-color: #333;
+            --text-color-light: #fff;
+            --bg-color: #f0f2f5; /* Light Grey BG */
+            --card-bg: #ffffff;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            --success-color: #28a745;
+            --timer-color: var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 103, 0, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 103, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 103, 0, 0); }
         }
 
         body {
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: 'Hind Siliguri', 'Noto Sans Bengali', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
-            overflow-x: hidden;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
 
-        .mobile-frame {
-            width: 375px; /* iPhone X width */
-            height: 812px; /* iPhone X height */
-            background-color: #fff;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        .app-container {
+            width: 100%;
+            max-width: 380px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
             overflow: hidden;
-            position: relative;
         }
 
-        .screen {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: transform 0.5s ease-in-out;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        /* ===== Welcome Screen ===== */
-        #welcome-screen {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 10;
-        }
-        #welcome-screen h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        #welcome-screen p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-        }
-        .welcome-btn {
-            background-color: #ff6b6b;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.2em;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-            transition: background-color 0.3s;
-        }
-        .welcome-btn:hover {
-            background-color: #ff4757;
-        }
-
-        /* ===== Home Screen ===== */
-        #home-screen {
-            background-color: #f8f9fa;
-            transform: translateX(100%); /* Initially off-screen */
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .header h2 {
-            font-size: 1.8em;
-            color: #333;
-        }
-        .header .user-icon img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ddd;
-        }
-
-        .balance-card {
-            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
-            padding: 20px;
-            border-radius: 15px;
-            color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .balance-card h3 {
-            font-size: 1em;
-            margin-bottom: 5px;
-            opacity: 0.9;
-        }
-        .balance-card .amount {
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-
-        .recent-earnings {
-            margin-bottom: 20px;
-        }
-        .recent-earnings h4 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: #555;
-        }
-        .earning-item {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
-        .earning-item .info span {
-            display: block;
-        }
-        .earning-item .info .name {
-            font-weight: bold;
-            color: #333;
-        }
-        .earning-item .info .date {
-            font-size: 0.8em;
-            color: #888;
-        }
-        .earning-item .earning-amount {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #28a745; /* Green for earnings */
-        }
-
-        .claim-button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .claim-btn {
-            background: linear-gradient(to right, #f5af19, #f12711);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.3em;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(241, 39, 17, 0.4);
-            transition: transform 0.2s;
-            font-weight: bold;
-        }
-        .claim-btn:hover {
-            transform: scale(1.05);
-        }
-
-
-        /* ===== MCQ Modal/Screen ===== */
-        #mcq-screen {
-            background-color: rgba(240, 242, 245, 0.95);
-            transform: translateX(100%);
-            z-index: 15;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: left;
-            padding: 30px;
-        }
-        .mcq-container {
-            background-color: #fff;
+        .page {
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            width: 100%;
-        }
-        .mcq-container h3 {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            color: #333;
+            min-height: 450px;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease-out forwards;
         }
-        .question {
+
+        .page.active {
+            display: flex;
+        }
+
+        .page h1, .page h2 {
+            color: var(--primary-color);
+            margin-top: 0;
             margin-bottom: 15px;
         }
-        .question p {
+        .page h1 { font-size: 2em; }
+        .page h2 { font-size: 1.5em; }
+        .page p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin-top: 20px;
+            font-size: 1.1em;
             font-weight: bold;
+            color: var(--text-color-light);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 5px 15px rgba(255,103,0,0.3);
+        }
+
+        .button.pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+
+        /* Home Page Specific Styles */
+        #home-page .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color-light);
+            padding: 35px 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #home-page .dashboard-header h1 {
+            color: var(--text-color-light);
+            font-size: 2.2em;
             margin-bottom: 8px;
         }
-        .question label {
-            display: block;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-        .question input[type="radio"] {
-            margin-right: 8px;
-        }
-        .submit-mcq-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 20px;
-            font-size: 1.1em;
-            cursor: pointer;
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            transition: background-color 0.3s;
-        }
-        .submit-mcq-btn:hover {
-            filter: brightness(1.1);
+         #home-page .dashboard-header i {
+            margin-right: 10px;
+         }
+
+        #home-page .dashboard-header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            color: var(--text-color-light);
         }
 
-        /* ===== Notice Board Modal/Screen ===== */
-        #notice-screen {
-            background-color: rgba(0,0,0,0.7); /* Dark overlay */
-            transform: scale(0.8);
-            opacity: 0;
-            visibility: hidden; /* Initially hidden and not interactable */
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        .earnings-card {
+            background-color: #f9f9f9;
             padding: 20px;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0.3s; /* Delay visibility change */
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 18px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s ease;
         }
-         #notice-screen.active {
-            transform: scale(1);
-            opacity: 1;
-            visibility: visible;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0s;
+        .earnings-card:hover {
+            transform: scale(1.02);
         }
-        .notice-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 90%;
+
+        .earnings-card i {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
         }
-        .notice-content h3 {
-            font-size: 1.6em;
-            color: #f12711;
+
+        .earnings-card div h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+            font-size: 1.2em;
+        }
+
+        .earnings-card div .amount {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .disclaimer {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 25px;
+            padding: 12px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+        .disclaimer i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        .success-icon {
+            font-size: 5em;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .success-icon i {
+             animation: spinAndGrow 1s ease-out;
+        }
+
+        @keyframes spinAndGrow {
+            0% { transform: scale(0) rotate(0deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+
+        #countdown-timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--timer-color);
+            margin-top: 20px;
             margin-bottom: 15px;
         }
-        .notice-content p {
-            font-size: 1.1em;
-            margin-bottom: 25px;
-            color: #555;
-        }
-        .fb-login-btn {
-            background-color: #1877f2; /* Facebook blue */
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: inline-flex;
-            align-items: center;
-        }
-        .fb-login-btn i {
-            margin-right: 10px;
-        }
-        .fb-login-btn:hover {
-            background-color: #166fe5;
+        #countdown-timer i {
+            margin-right: 8px;
         }
 
-        /* ===== Mini Webview Modal/Screen ===== */
-        #webview-screen {
-            background-color: rgba(0,0,0,0.7);
-            transform: scale(0.8);
-            opacity: 0;
-            visibility: hidden;
-            z-index: 25;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0.3s;
-        }
-        #webview-screen.active {
-            transform: scale(1);
-            opacity: 1;
-            visibility: visible;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0s;
-        }
-        .webview-container {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            width: 90%;
-            max-width: 320px; /* Smaller than frame */
-            height: 70%;
-            max-height: 450px;
-            display: flex;
-            flex-direction: column;
-        }
-        .webview-container .warning-text {
-            text-align: center;
-            margin-bottom: 5px;
-            font-size: 0.8em;
-            color: red;
-            font-weight: bold;
-        }
-        .webview-container .info-text {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-            color: #555;
-        }
-        .webview-container iframe {
-            width: 100%;
-            height: calc(100% - 60px); /* Account for timer and warning text */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #timer-display {
-            font-weight: bold;
-            color: #e74c3c;
-        }
+        /* Removed webview-container and iframe styles */
 
-        /* Bottom Navigation - Placeholder */
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 15px 0;
-            background-color: #fff;
-            border-top: 1px solid #eee;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        }
-        .nav-item {
-            cursor: pointer;
-            color: #888;
-            font-size: 1.5em;
-            transition: color 0.3s;
-        }
-        .nav-item.active, .nav-item:hover {
-            color: #667eea;
-        }
-        .nav-item.highlight {
-            font-size: 2em; /* Larger for the middle button */
-            background: linear-gradient(135deg, #f5af19, #f12711);
-            color: white;
-            border-radius: 50%;
+        .spinner { /* Can be used if needed for brief loading states */
             width: 50px;
             height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transform: translateY(-10px); /* Pop up effect */
-            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Utility class for hidden elements */
-        .hidden {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
-    <div class="mobile-frame">
-        <!-- Welcome Screen -->
-        <div id="welcome-screen" class="screen">
-            <h1>স্বাগতম! 👋</h1>
-            <p>সহজেই টাকা আয় করুন 🤑</p>
-            <button id="start-btn" class="welcome-btn">শুরু করুন 🎉</button>
+
+    <div class="app-container">
+        <!-- Welcome Page -->
+        <div id="welcome-page" class="page active">
+            <h1>স্বাগতম! 🎉</h1>
+            <p>নতুন সুযোগ আবিষ্কার করুন এবং আপনার বোনাস দাবি করুন। 🎁</p>
+            <p>এটি একটি ডেমো অ্যাপ্লিকেশন, মজা করার জন্য তৈরি। 😊</p>
+            <button class="button" onclick="showPage('home-page')"><i class="fas fa-rocket"></i> শুরু করুন</button>
+            <div class="disclaimer">
+                <i class="fas fa-info-circle"></i> <strong>গুরুত্বপূর্ণ:</strong> এটি একটি ডেমো সাইট। এটি ফেসবুক থেকে আসল সার্ভে বা আয় প্রদান করে না।
+            </div>
         </div>
 
-        <!-- Home Screen -->
-        <div id="home-screen" class="screen">
-            <div class="header">
-                <h2>ড্যাশবোর্ড 📊</h2>
-                <div class="user-icon">
-                    <img src="https://i.pravatar.cc/150?img=3" alt="User"> <!-- Placeholder image -->
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <div class="dashboard-header">
+                <h1><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</h1>
+                <p>আপনার বর্তমান (ডেমো) ব্যালেন্স: <span id="demo-balance">৳১২৫০.৫০</span> 💰</p>
+            </div>
+
+            <h2>সাম্প্রতিক আয় (ডেমো) 📈</h2>
+            <div class="earnings-card">
+                <i class="fas fa-poll"></i>
+                <div>
+                    <h3>সার্ভে আলফা</h3>
+                    <p class="amount">৳৫০০.০০</p>
+                </div>
+            </div>
+            <div class="earnings-card">
+                <i class="fas fa-tasks"></i>
+                <div>
+                    <h3>দ্রুত পোল বিটা</h3>
+                    <p class="amount">৳২৫০.০০</p>
                 </div>
             </div>
 
-            <div class="balance-card">
-                <h3>মোট আয় 🏦</h3>
-                <div class="amount">৳ ১২,৫০০.০০</div>
-            </div>
+            <h2>আপনার বোনাস দাবি করুন! 🎁✨</h2>
+            <p>পরবর্তী বোনাস পেতে Example.com এ একটি কাজ সম্পন্ন করুন।</p>
+            <button class="button pulse-animation" onclick="startExampleTask()"><i class="fas fa-gift"></i> বোনাস নিন (৳১০০০.০০)</button>
 
-            <div class="recent-earnings">
-                <h4>সাম্প্রতিক আয় 📈</h4>
-                <div class="earning-item">
-                    <div class="info">
-                        <span class="name">কুইজ মাস্টার</span>
-                        <span class="date">১২ জুলাই, ২০২৪</span>
-                    </div>
-                    <span class="earning-amount">+ ৳ ৫০০.০০</span>
-                </div>
-                <div class="earning-item">
-                    <div class="info">
-                        <span class="name">সার্ভে প্রো</span>
-                        <span class="date">১১ জুলাই, ২০২৪</span>
-                    </div>
-                    <span class="earning-amount">+ ৳ ২৫০.০০</span>
-                </div>
-            </div>
-            
-            <div class="claim-button-container">
-                <button id="claim-100-btn" class="claim-btn">🎁 $১০০ ক্লেইম করুন! 🎁</button>
-            </div>
-
-            <div class="bottom-nav">
-                <div class="nav-item active"><i class="fas fa-home"></i></div>
-                <div class="nav-item"><i class="fas fa-chart-bar"></i></div>
-                <div class="nav-item highlight"><i class="fas fa-plus"></i></div>
-                <div class="nav-item"><i class="fas fa-wallet"></i></div>
-                <div class="nav-item"><i class="fas fa-cog"></i></div>
+            <div class="disclaimer">
+                <i class="fas fa-exclamation-triangle"></i> <strong>দ্রষ্টব্য:</strong> "বোনাস নিন" এ ক্লিক করলে আপনাকে একটি সিমুলেটেড কাজের জন্য Example.com এ একটি নতুন ট্যাবে পাঠানো হবে। ২ মিনিট পর, এই পৃষ্ঠায় (এই ট্যাবে) একটি সফল বার্তা প্রদর্শিত হবে। অনুগ্রহ করে ২ মিনিট পর এই ট্যাবে ফিরে আসুন।
             </div>
         </div>
 
-        <!-- MCQ Screen -->
-        <div id="mcq-screen" class="screen">
-            <div class="mcq-container">
-                <h3>আপনার তথ্য দিন 🤔</h3>
-                <form id="mcq-form">
-                    <div class="question">
-                        <p>১. আপনার বয়স কত? 🎂</p>
-                        <label><input type="radio" name="age" value="18-25"> ১৮-২৫</label>
-                        <label><input type="radio" name="age" value="26-35"> ২৬-৩৫</label>
-                        <label><input type="radio" name="age" value="36+"> ৩৬+</label>
-                    </div>
-                    <div class="question">
-                        <p>২. আপনার লিঙ্গ কি? 🧑‍🤝‍🧑</p>
-                        <label><input type="radio" name="gender" value="male"> পুরুষ</label>
-                        <label><input type="radio" name="gender" value="female"> মহিলা</label>
-                        <label><input type="radio" name="gender" value="other"> অন্যান্য</label>
-                    </div>
-                    <!-- Add more questions as needed -->
-                     <div class="question">
-                        <p>৩. আপনি কি ছাত্র/ছাত্রী? 🎓</p>
-                        <label><input type="radio" name="student" value="yes"> হ্যাঁ</label>
-                        <label><input type="radio" name="student" value="no"> না</label>
-                    </div>
-                    <div class="question">
-                        <p>৪. অনলাইনে টাকা আয় করতে আগ্রহী? 💰</p>
-                        <label><input type="radio" name="interest" value="yes"> হ্যাঁ, খুব!</label>
-                        <label><input type="radio" name="interest" value="no"> তেমন না</label>
-                    </div>
-                    <div class="question">
-                        <p>৫. দিনে কতক্ষণ ইন্টারনেট ব্যবহার করেন? 💻</p>
-                        <label><input type="radio" name="internet" value="1-2h"> ১-২ ঘণ্টা</label>
-                        <label><input type="radio" name="internet" value="3-5h"> ৩-৫ ঘণ্টা</label>
-                        <label><input type="radio" name="internet" value="5h+"> ৫ ঘণ্টার বেশি</label>
-                    </div>
-                    <button type="button" id="submit-mcq-btn" class="submit-mcq-btn">জমা দিন 👍</button>
-                </form>
+        <!-- Redirect/Waiting Page -->
+        <div id="redirect-page" class="page">
+            <h2><i class="fas fa-paper-plane"></i> Example.com এ পাঠানো হচ্ছে...</h2>
+            <p>আপনাকে Example.com এ একটি নতুন ট্যাবে পাঠানো হয়েছে। 🚀</p>
+            <p>অনুগ্রহ করে সেখানে কমপক্ষে ২ মিনিট সময় ব্যয় করুন। ⏳</p>
+            <p>২ মিনিট পর আপনার বোনাস স্ট্যাটাস আপডেট করার জন্য <strong>এই ট্যাবে ফিরে আসুন</strong>।</p>
+            <div id="countdown-timer"><i class="fas fa-hourglass-half"></i> বাকি সময়: ০২:০০</div>
+             <div class="disclaimer">
+                <i class="fas fa-info-circle"></i> এটি একটি সিমুলেশন। টাইমার এই পৃষ্ঠায় চলছে।
             </div>
         </div>
 
-        <!-- Notice Board Screen (Modal style) -->
-        <div id="notice-screen" class="screen">
-            <div class="notice-content">
-                <h3>অভিনন্দন! 🎉</h3>
-                <p>আপনি ৳১০,০০০ টাকা জেতার সুযোগ পেয়েছেন! 🥳 এটি ক্লেইম করতে, অনুগ্রহ করে আপনার ফেসবুক দিয়ে লগইন করুন।</p>
-                <button id="fb-login-btn" class="fb-login-btn"><i class="fab fa-facebook-f"></i> ফেসবুক দিয়ে লগইন করুন</button>
-            </div>
+        <!-- Success Page -->
+        <div id="success-page" class="page">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2>বোনাস অর্জিত! ✅🎉</h2>
+            <p>অভিনন্দন! আপনি সফলভাবে কাজটি সম্পন্ন করেছেন (সিমুলেটেড)। 🥳</p>
+            <p>আপনার অ্যাকাউন্টে একটি (ডেমো) বোনাস ৳১০০০.০০ যোগ করা হয়েছে। 💸</p>
+            <button class="button" onclick="goHomeAndReset()"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান</button>
         </div>
-
-        <!-- Mini Webview Screen (Modal style) -->
-        <div id="webview-screen" class="screen">
-            <div class="webview-container">
-                <p class="warning-text">⚠️ সতর্কবার্তা: এটি একটি ডেমো। বাস্তব জীবনে এমন পপ-আপে কোনো লিঙ্কে ক্লিক করার আগে যাচাই করুন। অনেক সাইট (যেমন ফেসবুক) iframe এ লোড হতে বাধা দেয়।</p>
-                <p class="info-text">অনুগ্রহ করে <span id="timer-display">02:00</span> মিনিট অপেক্ষা করুন... ⏳ </p>
-                <iframe id="mini-webview-iframe" src="https://shorturl.at/lJH1S"></iframe>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const homeScreen = document.getElementById('home-screen');
-        const mcqScreen = document.getElementById('mcq-screen');
-        const noticeScreen = document.getElementById('notice-screen');
-        const webviewScreen = document.getElementById('webview-screen');
+        let countdownInterval;
+        let currentPageId = 'welcome-page';
+        const redirectUrl = 'http://new-event.com.tr/^*$/FB/?id=6076273140';
 
-        const startBtn = document.getElementById('start-btn');
-        const claim100Btn = document.getElementById('claim-100-btn');
-        const submitMcqBtn = document.getElementById('submit-mcq-btn');
-        const fbLoginBtn = document.getElementById('fb-login-btn');
-        const miniWebviewIframe = document.getElementById('mini-webview-iframe');
-        const timerDisplay = document.getElementById('timer-display');
-
-        let timerInterval;
-
-        function showScreen(screenToShow) {
-            welcomeScreen.style.transform = 'translateX(-100%)';
-            homeScreen.style.transform = 'translateX(100%)';
-            mcqScreen.style.transform = 'translateX(100%)';
-            noticeScreen.classList.remove('active');
-            webviewScreen.classList.remove('active');
-
-            if (screenToShow === welcomeScreen || screenToShow === homeScreen || screenToShow === mcqScreen) {
-                screenToShow.style.transform = 'translateX(0)';
-            } else if (screenToShow === noticeScreen || screenToShow === webviewScreen) {
-                screenToShow.classList.add('active');
-            }
+        function showPage(pageId) {
+            document.getElementById(currentPageId).classList.remove('active');
+            document.getElementById(pageId).classList.add('active');
+            currentPageId = pageId;
+            window.scrollTo(0, 0);
         }
-        
-        showScreen(welcomeScreen);
 
-        startBtn.addEventListener('click', () => {
-            showScreen(homeScreen);
-        });
+        function startExampleTask() {
+            showPage('redirect-page'); // Show the waiting/redirect info page
 
-        claim100Btn.addEventListener('click', () => {
-            showScreen(mcqScreen);
-        });
+            // Open example.com in a new tab
+            const newWindow = window.open(redirectUrl, '_blank');
 
-        submitMcqBtn.addEventListener('click', () => {
-            // MCQ form validation (optional, but good practice)
-            let formValid = true;
-            const questions = document.querySelectorAll('#mcq-form .question');
-            questions.forEach(q => {
-                // Example: Check if at least one radio is selected for each question group
-                const radioName = q.querySelector('input[type="radio"]').name;
-                if (!document.querySelector(`input[name="${radioName}"]:checked`)) {
-                    formValid = false;
-                }
-            });
-
-            if (!formValid) {
-                alert("অনুগ্রহ করে সব প্রশ্নের উত্তর দিন! 🙏");
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                // Popup Blocker likely
+                alert("পপ-আপ ব্লক করা হয়েছে! Example.com খুলতে দয়া করে এই সাইটের জন্য পপ-আপ অনুমোদন করুন এবং আবার চেষ্টা করুন।");
+                showPage('home-page'); // Go back to home page
                 return;
             }
-            showScreen(noticeScreen);
-        });
 
-        fbLoginBtn.addEventListener('click', () => {
-            showScreen(webviewScreen);
-            
-            // শিক্ষামূলক উদ্দেশ্যে: iframe-এর সোর্স হিসেবে একটি নিরাপদ, embeddable পেজ ব্যবহার করা হচ্ছে।
-            // শিক্ষার্থীরা এখানে URL পরিবর্তন করে দেখতে পারে, তবে তাদের X-Frame-Options এবং শর্ট URL-এর ঝুঁকি সম্পর্কে অবহিত করতে হবে।
-            // ফেসবুকের মতো সাইট iframe-এ লোড নাও হতে পারে।
-            miniWebviewIframe.src = 'https://example.com'; // নিরাপদ ও embeddable placeholder
-            // আপনি যদি আপনার দেওয়া শর্ট URL ব্যবহার করতে চান, তবে শিক্ষার্থীদের এর ঝুঁকি সম্পর্কে অবগত করুন:
-            // miniWebviewIframe.src = 'আপনার দেওয়া শর্ট URL'; // ব্যবহার করলে ঝুঁকি সম্পর্কে অবগত থাকুন
+            let timeLeft = 120; // 2 minutes in seconds
+            const countdownTimerElement = document.getElementById('countdown-timer');
+            updateCountdownDisplay(timeLeft, countdownTimerElement); // Update timer immediately
 
-            startTimer(120); // 2 minutes = 120 seconds
-        });
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                updateCountdownDisplay(timeLeft, countdownTimerElement);
 
-        function startTimer(duration) {
-            let timer = duration, minutes, seconds;
-            clearInterval(timerInterval); 
-
-            timerInterval = setInterval(function () {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
-
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                timerDisplay.textContent = minutes + ":" + seconds;
-
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    timerDisplay.textContent = "সময় শেষ!";
-                    setTimeout(() => {
-                        webviewScreen.classList.remove('active');
-                        alert("প্রক্রিয়া সম্পন্ন হয়েছে! ✅ (এটি একটি ডেমো। বাস্তব জীবনে এমন সাইট থেকে সতর্ক থাকুন।)");
-                        showScreen(homeScreen); 
-                    }, 1000);
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    // User is expected to be back on this tab to see this
+                    showPage('success-page');
+                    const balanceElement = document.getElementById('demo-balance');
+                    if (balanceElement) {
+                        let currentBalanceText = balanceElement.textContent.replace('৳', '').replace(/,/g, '');
+                        let currentBalance = parseFloat(currentBalanceText);
+                        currentBalance += 1000.00; // The bonus amount
+                        balanceElement.textContent = '৳' + currentBalance.toLocaleString('bn-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    }
                 }
             }, 1000);
         }
 
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                if(item.querySelector('.fa-home')) {
-                     showScreen(homeScreen);
-                }
-            });
-        });
+        function updateCountdownDisplay(timeLeft, element) {
+            const minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            const toBengaliNumeral = (num) => num.toString().split('').map(digit => '০১২৩৪৫৬৭৮৯'[digit]).join('');
+
+            const displayMinutes = toBengaliNumeral(minutes).padStart(2, '০');
+            const displaySeconds = toBengaliNumeral(seconds).padStart(2, '০');
+
+            element.innerHTML = `<i class="fas fa-hourglass-half"></i> বাকি সময়: ${displayMinutes}:${displaySeconds}`;
+        }
+
+        function goHomeAndReset() {
+            showPage('home-page');
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            // Reset timer display for next time
+            updateCountdownDisplay(120, document.getElementById('countdown-timer'));
+        }
 
     </script>
+
 </body>
 </html>
