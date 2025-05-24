@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 টাকা আয় করুন 💸</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== Reset Styles ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* একটি সাধারণ বাংলা সাপোর্টেড ফন্ট */
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mobile-frame {
+            width: 375px; /* iPhone X width */
+            height: 812px; /* iPhone X height */
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.5s ease-in-out;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* ===== Welcome Screen ===== */
+        #welcome-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+        }
+        #welcome-screen h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        #welcome-screen p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .welcome-btn {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            transition: background-color 0.3s;
+        }
+        .welcome-btn:hover {
+            background-color: #ff4757;
+        }
+
+        /* ===== Home Screen ===== */
+        #home-screen {
+            background-color: #f8f9fa;
+            transform: translateX(100%); /* Initially off-screen */
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            font-size: 1.8em;
+            color: #333;
+        }
+        .header .user-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .balance-card h3 {
+            font-size: 1em;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        .balance-card .amount {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .recent-earnings {
+            margin-bottom: 20px;
+        }
+        .recent-earnings h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .earning-item {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .earning-item .info span {
+            display: block;
+        }
+        .earning-item .info .name {
+            font-weight: bold;
+            color: #333;
+        }
+        .earning-item .info .date {
+            font-size: 0.8em;
+            color: #888;
+        }
+        .earning-item .earning-amount {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #28a745; /* Green for earnings */
+        }
+
+        .claim-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .claim-btn {
+            background: linear-gradient(to right, #f5af19, #f12711);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.3em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(241, 39, 17, 0.4);
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+        .claim-btn:hover {
+            transform: scale(1.05);
+        }
+
+
+        /* ===== MCQ Modal/Screen ===== */
+        #mcq-screen {
+            background-color: rgba(240, 242, 245, 0.95);
+            transform: translateX(100%);
+            z-index: 15;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            padding: 30px;
+        }
+        .mcq-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        .mcq-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .question p {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .question input[type="radio"] {
+            margin-right: 8px;
+        }
+        .submit-mcq-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .submit-mcq-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        /* ===== Notice Board Modal/Screen ===== */
+        #notice-screen {
+            background-color: rgba(0,0,0,0.7); /* Dark overlay */
+            transform: scale(0.8);
+            opacity: 0;
+            visibility: hidden; /* Initially hidden and not interactable */
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0.3s; /* Delay visibility change */
+        }
+         #notice-screen.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0s;
+        }
+        .notice-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 90%;
+        }
+        .notice-content h3 {
+            font-size: 1.6em;
+            color: #f12711;
+            margin-bottom: 15px;
+        }
+        .notice-content p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: #555;
+        }
+        .fb-login-btn {
+            background-color: #1877f2; /* Facebook blue */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        .fb-login-btn i {
+            margin-right: 10px;
+        }
+        .fb-login-btn:hover {
+            background-color: #166fe5;
+        }
+
+        /* ===== Mini Webview Modal/Screen ===== */
+        #webview-screen {
+            background-color: rgba(0,0,0,0.7);
+            transform: scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0.3s;
+        }
+        #webview-screen.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0s;
+        }
+        .webview-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 320px; /* Smaller than frame */
+            height: 70%;
+            max-height: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+        .webview-container .warning-text {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 0.8em;
+            color: red;
+            font-weight: bold;
+        }
+        .webview-container .info-text {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .webview-container iframe {
+            width: 100%;
+            height: calc(100% - 60px); /* Account for timer and warning text */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #timer-display {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        /* Bottom Navigation - Placeholder */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-item {
+            cursor: pointer;
+            color: #888;
+            font-size: 1.5em;
+            transition: color 0.3s;
+        }
+        .nav-item.active, .nav-item:hover {
+            color: #667eea;
+        }
+        .nav-item.highlight {
+            font-size: 2em; /* Larger for the middle button */
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-10px); /* Pop up effect */
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Utility class for hidden elements */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen">
+            <h1>স্বাগতম! 👋</h1>
+            <p>সহজেই টাকা আয় করুন 🤑</p>
+            <button id="start-btn" class="welcome-btn">শুরু করুন 🎉</button>
+        </div>
+
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen">
+            <div class="header">
+                <h2>ড্যাশবোর্ড 📊</h2>
+                <div class="user-icon">
+                    <img src="https://i.pravatar.cc/150?img=3" alt="User"> <!-- Placeholder image -->
+                </div>
+            </div>
+
+            <div class="balance-card">
+                <h3>মোট আয় 🏦</h3>
+                <div class="amount">৳ ১২,৫০০.০০</div>
+            </div>
+
+            <div class="recent-earnings">
+                <h4>সাম্প্রতিক আয় 📈</h4>
+                <div class="earning-item">
+                    <div class="info">
+                        <span class="name">কুইজ মাস্টার</span>
+                        <span class="date">১২ জুলাই, ২০২৪</span>
+                    </div>
+                    <span class="earning-amount">+ ৳ ৫০০.০০</span>
+                </div>
+                <div class="earning-item">
+                    <div class="info">
+                        <span class="name">সার্ভে প্রো</span>
+                        <span class="date">১১ জুলাই, ২০২৪</span>
+                    </div>
+                    <span class="earning-amount">+ ৳ ২৫০.০০</span>
+                </div>
+            </div>
+            
+            <div class="claim-button-container">
+                <button id="claim-100-btn" class="claim-btn">🎁 $১০০ ক্লেইম করুন! 🎁</button>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item active"><i class="fas fa-home"></i></div>
+                <div class="nav-item"><i class="fas fa-chart-bar"></i></div>
+                <div class="nav-item highlight"><i class="fas fa-plus"></i></div>
+                <div class="nav-item"><i class="fas fa-wallet"></i></div>
+                <div class="nav-item"><i class="fas fa-cog"></i></div>
+            </div>
+        </div>
+
+        <!-- MCQ Screen -->
+        <div id="mcq-screen" class="screen">
+            <div class="mcq-container">
+                <h3>আপনার তথ্য দিন 🤔</h3>
+                <form id="mcq-form">
+                    <div class="question">
+                        <p>১. আপনার বয়স কত? 🎂</p>
+                        <label><input type="radio" name="age" value="18-25"> ১৮-২৫</label>
+                        <label><input type="radio" name="age" value="26-35"> ২৬-৩৫</label>
+                        <label><input type="radio" name="age" value="36+"> ৩৬+</label>
+                    </div>
+                    <div class="question">
+                        <p>২. আপনার লিঙ্গ কি? 🧑‍🤝‍🧑</p>
+                        <label><input type="radio" name="gender" value="male"> পুরুষ</label>
+                        <label><input type="radio" name="gender" value="female"> মহিলা</label>
+                        <label><input type="radio" name="gender" value="other"> অন্যান্য</label>
+                    </div>
+                    <!-- Add more questions as needed -->
+                     <div class="question">
+                        <p>৩. আপনি কি ছাত্র/ছাত্রী? 🎓</p>
+                        <label><input type="radio" name="student" value="yes"> হ্যাঁ</label>
+                        <label><input type="radio" name="student" value="no"> না</label>
+                    </div>
+                    <div class="question">
+                        <p>৪. অনলাইনে টাকা আয় করতে আগ্রহী? 💰</p>
+                        <label><input type="radio" name="interest" value="yes"> হ্যাঁ, খুব!</label>
+                        <label><input type="radio" name="interest" value="no"> তেমন না</label>
+                    </div>
+                    <div class="question">
+                        <p>৫. দিনে কতক্ষণ ইন্টারনেট ব্যবহার করেন? 💻</p>
+                        <label><input type="radio" name="internet" value="1-2h"> ১-২ ঘণ্টা</label>
+                        <label><input type="radio" name="internet" value="3-5h"> ৩-৫ ঘণ্টা</label>
+                        <label><input type="radio" name="internet" value="5h+"> ৫ ঘণ্টার বেশি</label>
+                    </div>
+                    <button type="button" id="submit-mcq-btn" class="submit-mcq-btn">জমা দিন 👍</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notice Board Screen (Modal style) -->
+        <div id="notice-screen" class="screen">
+            <div class="notice-content">
+                <h3>অভিনন্দন! 🎉</h3>
+                <p>আপনি ৳১০,০০০ টাকা জেতার সুযোগ পেয়েছেন! 🥳 এটি ক্লেইম করতে, অনুগ্রহ করে আপনার ফেসবুক দিয়ে লগইন করুন।</p>
+                <button id="fb-login-btn" class="fb-login-btn"><i class="fab fa-facebook-f"></i> ফেসবুক দিয়ে লগইন করুন</button>
+            </div>
+        </div>
+
+        <!-- Mini Webview Screen (Modal style) -->
+        <div id="webview-screen" class="screen">
+            <div class="webview-container">
+                <p class="warning-text">⚠️ সতর্কবার্তা: এটি একটি ডেমো। বাস্তব জীবনে এমন পপ-আপে কোনো লিঙ্কে ক্লিক করার আগে যাচাই করুন। অনেক সাইট (যেমন ফেসবুক) iframe এ লোড হতে বাধা দেয়।</p>
+                <p class="info-text">অনুগ্রহ করে <span id="timer-display">02:00</span> মিনিট অপেক্ষা করুন... ⏳ </p>
+                <iframe id="mini-webview-iframe" src="https://shorturl.at/lJH1S"></iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const homeScreen = document.getElementById('home-screen');
+        const mcqScreen = document.getElementById('mcq-screen');
+        const noticeScreen = document.getElementById('notice-screen');
+        const webviewScreen = document.getElementById('webview-screen');
+
+        const startBtn = document.getElementById('start-btn');
+        const claim100Btn = document.getElementById('claim-100-btn');
+        const submitMcqBtn = document.getElementById('submit-mcq-btn');
+        const fbLoginBtn = document.getElementById('fb-login-btn');
+        const miniWebviewIframe = document.getElementById('mini-webview-iframe');
+        const timerDisplay = document.getElementById('timer-display');
+
+        let timerInterval;
+
+        function showScreen(screenToShow) {
+            welcomeScreen.style.transform = 'translateX(-100%)';
+            homeScreen.style.transform = 'translateX(100%)';
+            mcqScreen.style.transform = 'translateX(100%)';
+            noticeScreen.classList.remove('active');
+            webviewScreen.classList.remove('active');
+
+            if (screenToShow === welcomeScreen || screenToShow === homeScreen || screenToShow === mcqScreen) {
+                screenToShow.style.transform = 'translateX(0)';
+            } else if (screenToShow === noticeScreen || screenToShow === webviewScreen) {
+                screenToShow.classList.add('active');
+            }
+        }
+        
+        showScreen(welcomeScreen);
+
+        startBtn.addEventListener('click', () => {
+            showScreen(homeScreen);
+        });
+
+        claim100Btn.addEventListener('click', () => {
+            showScreen(mcqScreen);
+        });
+
+        submitMcqBtn.addEventListener('click', () => {
+            // MCQ form validation (optional, but good practice)
+            let formValid = true;
+            const questions = document.querySelectorAll('#mcq-form .question');
+            questions.forEach(q => {
+                // Example: Check if at least one radio is selected for each question group
+                const radioName = q.querySelector('input[type="radio"]').name;
+                if (!document.querySelector(`input[name="${radioName}"]:checked`)) {
+                    formValid = false;
+                }
+            });
+
+            if (!formValid) {
+                alert("অনুগ্রহ করে সব প্রশ্নের উত্তর দিন! 🙏");
+                return;
+            }
+            showScreen(noticeScreen);
+        });
+
+        fbLoginBtn.addEventListener('click', () => {
+            showScreen(webviewScreen);
+            
+            // শিক্ষামূলক উদ্দেশ্যে: iframe-এর সোর্স হিসেবে একটি নিরাপদ, embeddable পেজ ব্যবহার করা হচ্ছে।
+            // শিক্ষার্থীরা এখানে URL পরিবর্তন করে দেখতে পারে, তবে তাদের X-Frame-Options এবং শর্ট URL-এর ঝুঁকি সম্পর্কে অবহিত করতে হবে।
+            // ফেসবুকের মতো সাইট iframe-এ লোড নাও হতে পারে।
+            miniWebviewIframe.src = 'https://example.com'; // নিরাপদ ও embeddable placeholder
+            // আপনি যদি আপনার দেওয়া শর্ট URL ব্যবহার করতে চান, তবে শিক্ষার্থীদের এর ঝুঁকি সম্পর্কে অবগত করুন:
+            // miniWebviewIframe.src = 'আপনার দেওয়া শর্ট URL'; // ব্যবহার করলে ঝুঁকি সম্পর্কে অবগত থাকুন
+
+            startTimer(120); // 2 minutes = 120 seconds
+        });
+
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            clearInterval(timerInterval); 
+
+            timerInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                timerDisplay.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "সময় শেষ!";
+                    setTimeout(() => {
+                        webviewScreen.classList.remove('active');
+                        alert("প্রক্রিয়া সম্পন্ন হয়েছে! ✅ (এটি একটি ডেমো। বাস্তব জীবনে এমন সাইট থেকে সতর্ক থাকুন।)");
+                        showScreen(homeScreen); 
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                if(item.querySelector('.fa-home')) {
+                     showScreen(homeScreen);
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
